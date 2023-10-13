@@ -1,0 +1,26 @@
+<h1>Pokemon3D Drucker</h1>
+<form enctype="multipart/form-data" action="/Anfrage/" method="POST">
+     {% csrf_token %} 
+    <input type="text" name="name"id="AnfrageID">
+
+
+</form>
+
+
+
+
+
+<script>
+    function addAnfrage() {
+
+        let itemName = prompt('Neues Pokemon')
+        let token = '{{ csrf_token }}';
+        let formData = new FormData();
+        formData.append('Name', itemName)
+        formData.append('csrfmiddlewaretoken', token);
+        fetch('/Anfrage/', {
+            method: 'POST',
+            body: formData
+        });
+    }
+</script>
