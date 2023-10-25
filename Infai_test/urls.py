@@ -16,11 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from Pokemon.views import Pokemon3D
-
+from Pokemon.views import Pokemon3D,test,Taschenrechner
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('Anfrage/', Pokemon3D)]
- 
+    path('Anfrage/', Pokemon3D),
+    path('', Pokemon3D),
+    path('test/<param>/', test),
+    path('test1/<param0>/<string>/<param1>/', Taschenrechner)]
