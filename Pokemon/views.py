@@ -1,13 +1,38 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.http import HttpResponse
+import pickle
+from .models import counter 
+
 
 import math
 import json
 import redis
 # Create your views here.
 
-redis_client = redis.StrictRedis(host='redis://:"+REDIS_PASSWORD+"@host.docker.internal:6379/0', port= 6379, db=0)
+
+redis_client = redis.StrictRedis(host='cache', port= 6379, db=0)
+# neuer_eintrag = counter(counter='',counter_id='carkey')
+# neuer_eintrag.save()
+def Eintrag(request):
+    new = counter(counter='0',counter_id='carkey')
+    new.save()
+    return JsonResponse({"Eintrag": 'neu'})
+
+
+
+def counter1(primary_key):
+    
+    datensatz = counter.objects.get(counter_id=primary_key)
+    
+    datensatz.counter += 1
+    
+    datensatz.save()
+    return datensatz.counter
+    
+
+
+
 def Pokemon3D(request):
     if request.method == 'POST':
         print('received request:', request.POST['name'])
@@ -61,20 +86,36 @@ def Taschenrechner(request, param0,string, param1):
      
      
 def string(request,param):
-        param = float(param)
+        param = int(param)
         x = 5 - param
         data = {"data":x}  
-        
-        string = data.get('data')
+        Zähler = counter1('carkey')
+        string = data.get('data') #redis Befehle
         key = 'carkey'
-        redis_client.set(key, string)
-        return JsonResponse({"String gespeichert": x})
+        redis_client.set(key, pickle.dumps(string))
+        return JsonResponse({"String gespeichert": x, "Zähler": Zähler})
 
 def get_string(request):
     key = 'carkey'
     cache = redis_client.get(key)
+    cache = pickle.loads(cache)
     
-    return JsonResponse({"string": cache})       
+    
+    return JsonResponse({"string": cache})
+
+def counter2(request):
+    
+    #Zähler2= counter1('carkey')
+    Zähler2 = counter.objects.get(counter_id='carkey')
+    Zähler2 = Zähler2.counter
+    
+    return JsonResponse({"Zähler": Zähler2})
+
+
+
+        
+
+       
         
     
     
