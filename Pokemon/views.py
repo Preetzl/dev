@@ -3,8 +3,9 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 import pickle
 from .models import counter 
+from django.conf import settings
 
-
+import os
 import math
 import json
 import redis
@@ -88,11 +89,12 @@ def Taschenrechner(request, param0,string, param1):
 def string(request,param):
         param = int(param)
         x = 5 - param
-        data = {"data":x}  
+        data = {"data":x}
         Zähler = counter1('carkey')
         string = data.get('data') #redis Befehle
         key = 'carkey'
-        redis_client.set(key, pickle.dumps(string))
+        y = os.environ.get('REDIS_PASSWORD')
+        redis_client.set(key, pickle.dumps(string),y)
         return JsonResponse({"String gespeichert": x, "Zähler": Zähler})
 
 def get_string(request):
@@ -113,7 +115,10 @@ def counter2(request):
 
 
 
-        
+def enviroment(request):
+    y = os.environ.get('SECRET_KEY')
+    
+    return JsonResponse({"Password": y})
 
        
         

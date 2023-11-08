@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from Pokemon.views import Pokemon3D,test,Taschenrechner, string, get_string, counter2,Eintrag
+from Pokemon.views import Pokemon3D,test,Taschenrechner, string, get_string, counter2,Eintrag,enviroment
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +27,5 @@ urlpatterns = [
     path('string/<param>/', string),
     path('get_string/', get_string),
     path('counter/', counter2),
-    path('new/', Eintrag)]
+    path('new/', Eintrag),
+    path('env/', enviroment)]
